@@ -1,0 +1,355 @@
+{
+  "name": "Email automation",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyX",
+              "value": 1
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -960,
+        -200
+      ],
+      "id": "bd79ac41-b2b3-4f71-b492-218a764b2958",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "JQKtJ7MmaCkyEitW",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.text }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "job application",
+              "description": "Emails where a sender expresses interest in a job opportunity, submits a resume/CV, or inquires about employment positions. These messages may include cover letters, portfolios, or job titles."
+            },
+            {
+              "category": "irrelevant",
+              "description": "Emails that do not relate to job opportunities or sponsorship. This includes newsletters, marketing emails, spam, general inquiries, or non-actionable content."
+            },
+            {
+              "category": "Internship",
+              "description": "Everything related to internship should to be answered accordingly"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1,
+      "position": [
+        -700,
+        -200
+      ],
+      "id": "95db4f7e-5e3c-4027-adcb-55e75edaa879",
+      "name": "Text Classifier"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -680,
+        60
+      ],
+      "id": "bedb5363-fd9c-4d6d-979f-8d6c9b90e669",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "fhCtRzUPA2BPg7vd",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are an intelligent email assistant. Your task is to read the email below and generate a professional and polite response, depending on its category.\n\n\nInstructions:\n- If the category is **Job Application**: Thank the sender, acknowledge the application, and mention the next steps or that the team will review the CV.\n\nWrite a polite, helpful reply based on the email content and its category.\n\nI want you to response in 2 part, email subject and body.\n\nThe email to responed is : {{ $('Gmail Trigger').item.json.to.text }}",
+              "role": "system"
+            }
+          ]
+        },
+        "jsonOutput": "={{ true }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -220,
+        -380
+      ],
+      "id": "2577bc53-94ca-4b8e-abb4-7f310964401d",
+      "name": "OpenAI",
+      "alwaysOutputData": false,
+      "notesInFlow": false,
+      "credentials": {
+        "openAiApi": {
+          "id": "fhCtRzUPA2BPg7vd",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "={{ $json.message.content.subject }}",
+        "message": "={{ $json.message.content.body }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        220,
+        -380
+      ],
+      "id": "783e88cd-a725-4a4b-a6c4-4a67c77a3de4",
+      "name": "Gmail",
+      "webhookId": "18f7305e-cac1-4d1a-8e60-86e1f6aa8f57",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "JQKtJ7MmaCkyEitW",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are an intelligent email assistant. Your task is to read the email below and generate a professional and polite response, depending on its category.\n\nThe email will belong to one of these three categories:\n1. **Job Application** – A person is applying for a job or inquiring about employment.\n2. **Sponsorship Request** – A person or organization is requesting collaboration or brand sponsorship.\n3. **Irrelevant** – The email does not require a response or is unrelated to the assistant’s tasks.\n\nInstructions:\n- If the category is **Job Application**: Thank the sender, acknowledge the application, and mention the next steps or that the team will review the CV.\n- If the category is **Sponsorship Request**: Politely acknowledge the request, thank them for reaching out, and let them know the proposal will be reviewed or redirect if not interested.\n- If the category is **Irrelevant**: Respond with a polite message indicating the content is unrelated or does not require action.\n\n\nWrite a polite, helpful reply based on the email content and its category.\n\nI want you to response in 2 part, email subject and body.\n\nThe email to response is : {{ $json.text }}",
+              "role": "system"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -220,
+        -140
+      ],
+      "id": "7e338937-d068-45c1-b381-e4c6dea2f467",
+      "name": "OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "fhCtRzUPA2BPg7vd",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=\nYou are an assistant of me and you have to answer everthing related to internship accordingly.\nI want you to response in 2 part, email subject and body.\n\nThe email to responed is {{ $('Gmail Trigger').item.json.text }}",
+              "role": "system"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -220,
+        80
+      ],
+      "id": "a398c93f-5a17-42bd-bef5-923e33112279",
+      "name": "OpenAI2",
+      "credentials": {
+        "openAiApi": {
+          "id": "fhCtRzUPA2BPg7vd",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "={{ $('Gmail Trigger').item.json.headers.subject }}",
+        "message": "={{ $('Gmail Trigger').item.json.text }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        220,
+        80
+      ],
+      "id": "b90cfef6-932f-47d8-a897-6ed5d1d0a46f",
+      "name": "Gmail1",
+      "webhookId": "2639c726-3430-4f37-8cd5-850cf0add296",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "JQKtJ7MmaCkyEitW",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "={{ $('Text Classifier').item.json.subject }}",
+        "message": "={{ $('Gmail Trigger').item.json.text }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        220,
+        -140
+      ],
+      "id": "bcfa79a8-3a08-49ec-8626-9f07b05a238d",
+      "name": "Gmail2",
+      "webhookId": "f494e7c6-f4e2-4bfc-bbbb-f0f2b14e4336",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "JQKtJ7MmaCkyEitW",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "OpenAI2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI2": {
+      "main": [
+        [
+          {
+            "node": "Gmail1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI1": {
+      "main": [
+        [
+          {
+            "node": "Gmail2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0121cd95-2e83-4257-bb24-111d3b6b2de9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f249b79f7a0d2e7abc727b6ba176f35ee1cacc7f3059a37c849864e6fc4fd024"
+  },
+  "id": "oPJGwFeWwEkKhfwH",
+  "tags": []
+}
