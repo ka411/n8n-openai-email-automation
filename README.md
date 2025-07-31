@@ -3,4 +3,3 @@ This project implements a smart, automated email response system using n8n workf
 
 This repository aims to continuously enhance the email classification accuracy and response quality by refining workflows, improving prompt engineering, and expanding category coverage based on real-world use cases.
 
-The workflow Screenshot is attached for more clarification.
