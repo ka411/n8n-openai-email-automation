@@ -152,7 +152,7 @@ Set CLASSIFY_THRESHOLD and destinations for logs/alerts.
 
 Test with sample emails; enable production triggers when confident.
 
-In short: this project gives you a plug-and-play backbone to triage and answer emails automatically, with a human-friendly review path and a feedback loop that continually improves accuracy and tone. It’s simple to start, safe to operate, and designed to grow with your real-world inbox.
+In short, this project gives you a plug-and-play backbone to triage and answer emails automatically, with a human-friendly review path and a feedback loop that continually improves accuracy and tone. It’s simple to start, safe to operate, and designed to grow with your real-world inbox.
 
 
 
