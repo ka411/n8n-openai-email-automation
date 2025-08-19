@@ -150,7 +150,7 @@ Edit categories, few-shot examples, and reply templates.
 
 Set CLASSIFY_THRESHOLD and destinations for logs/alerts.
 
-n8n-OpenAI Email Automatiyou can on — Project Summary
+n8n-OpenAI Email Automation can on — Project Summary
 
 Logging & Analytics
 
