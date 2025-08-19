@@ -130,7 +130,7 @@ Playbooks: fallbacks when OpenAI is down (queue and retry), and a “manual mode
 
 A/B tests: try alternative openings, call-to-action phrasing, and signature styles.
 
-Roadmap / extensions
+Roadmap/extensions
 Multilingual support (detect language → translate → respond in sender’s language).
 
 Attachment handling (CV parsing, form extraction).
@@ -139,7 +139,7 @@ Thread awareness (only respond once per thread unless new intent).
 
 CRM sync (HubSpot/Pipedrive) for leads, ATS sync for candidates.
 
-Fine-tuned categorizer once you have labeled data to reduce API cost and increase accuracy.
+Fine-tuned the categorizer once you have labeled data to reduce API cost and increase accuracy.
 
 Getting started (quick)
 Spin up n8n (Docker) and set Gmail + OpenAI credentials.
