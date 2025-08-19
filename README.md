@@ -12,3 +12,12 @@ Keeps records: stores classifications, confidence, and email metadata (e.g., in 
 
 Improves over time: you can refine prompts, templates, and categories based on real conversations.
 
+Why this is useful
+Speed: Every sender gets a timely, relevant reply—even outside office hours.
+
+Consistency: Standardized tone and content for sensitive flows (e.g., hiring).
+
+Focus: Humans review only low-confidence or high-impact messages, not the long tail of routine emails.
+
+Learning loop: Misclassifications are fed back into the system to improve prompt quality and rules.
+
