@@ -139,7 +139,7 @@ Thread awareness (only respond once per thread unless new intent).
 
 CRM sync (HubSpot/Pipedrive) for leads, ATS sync for candidates.
 
-Fine-tuned the categorizer once you have labeled data to reduce API cost and increase accuracy.
+Fine-tune the categorizer once you have labeled data to reduce API cost and increase accuracy.
 
 Getting started (quick)
 Spin up n8n (Docker) and set Gmail + OpenAI credentials.
